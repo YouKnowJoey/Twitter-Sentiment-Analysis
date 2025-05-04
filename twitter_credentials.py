@@ -8,8 +8,10 @@ Thank you [@vprusso](https://github.com/vprusso) for your contribution to the op
 # YouTube Video: https://www.youtube.com/watch?v=rhBZqEWsZU4
 # Variables that contains the user credentials to access Twitter API
 
+## To stream, you must make a developer account at: "Twitter Developer Platform" ##
 ### Credentials are unique (sacred) to every user ###
 ACCESS_TOKEN = ""
 ACCESS_TOKEN_SECRET = ""
 CONSUMER_KEY = ""
 CONSUMER_SECRET = ""
+BEARER_TOKEN = ""

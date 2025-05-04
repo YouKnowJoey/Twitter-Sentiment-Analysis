@@ -1,0 +1,15 @@
+# run in cmd line 'conda env create -f environment.yml'
+
+name: twitter-sentiment
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - tweepy
+  - matplotlib
+  - numpy
+  - pandas
+  - tensorflow=2.9
+  - tensorflow-datasets=4.2.0
+  - scikit-learn

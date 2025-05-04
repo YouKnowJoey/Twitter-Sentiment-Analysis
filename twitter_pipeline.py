@@ -7,11 +7,8 @@ Thank you [@vprusso](https://github.com/vprusso) for your contribution to the op
 
 from tweepy import API 
 from tweepy import Cursor
-from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler
-from tweepy import Stream
-
-from textblob import TextBlob
+from tweepy.streaming import StreamingClient
+from tweepy import Client
  
 import twitter_credentials
 
@@ -55,9 +52,15 @@ class TwitterClient():
 class TwitterAuthenticator():
 
     def authenticate_twitter_app(self):
-        auth = OAuthHandler(twitter_credentials.CONSUMER_KEY, twitter_credentials.CONSUMER_SECRET)
-        auth.set_access_token(twitter_credentials.ACCESS_TOKEN, twitter_credentials.ACCESS_TOKEN_SECRET)
-        return auth
+        client = Client(
+            bearer_token=twitter_credentials.BEARER_TOKEN,
+            consumer_key=twitter_credentials.CONSUMER_KEY,
+            consumer_secret=twitter_credentials.CONSUMER_SECRET,
+            access_token=twitter_credentials.ACCESS_TOKEN,
+            access_token_secret=twitter_credentials.ACCESS_TOKEN_SECRET,
+            wait_on_rate_limit=True
+        )
+        return client
 
 # # # # TWITTER STREAMER # # # #
 class TwitterStreamer():
@@ -65,24 +68,25 @@ class TwitterStreamer():
     Class for streaming and processing live tweets.
     """
     def __init__(self):
-        self.twitter_autenticator = TwitterAuthenticator()    
+        self.client = TwitterAuthenticator().authenticate_twitter_app() 
 
     def stream_tweets(self, fetched_tweets_filename, hash_tag_list):
         # This handles Twitter authetification and the connection to Twitter Streaming API
         listener = TwitterListener(fetched_tweets_filename)
         auth = self.twitter_autenticator.authenticate_twitter_app() 
-        stream = Stream(auth, listener)
+        stream_listener = TwitterListener(auth.bearer_token, listener)
 
         # This line filter Twitter Streams to capture data by the keywords: 
-        stream.filter(track=hash_tag_list)
+        stream_listener.filter(track=hash_tag_list)
 
 
 # # # # TWITTER STREAM LISTENER # # # #
-class TwitterListener(StreamListener):
+class TwitterListener(StreamingClient):
     """
     This is a basic listener that just prints received tweets to stdout.
     """
     def __init__(self, fetched_tweets_filename):
+        super().__init__()
         self.fetched_tweets_filename = fetched_tweets_filename
 
     def on_data(self, data):
@@ -93,7 +97,7 @@ class TwitterListener(StreamListener):
             return True
         except BaseException as e:
             print("Error on_data %s" % str(e))
-        return True
+            raise e
           
     def on_error(self, status):
         if status == 420:
@@ -108,7 +112,8 @@ class TweetAnalyzer():
     """
 
     def clean_tweet(self, tweet):
-        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+        #return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\\w+:\\/\\/\\S+)", " ", tweet).split())
 
     def tweets_to_data_frame(self, tweets):
         df = pd.DataFrame(data=[tweet.text for tweet in tweets], columns=['tweets'])
@@ -130,8 +135,8 @@ if __name__ == '__main__':
 
     api = twitter_client.get_twitter_client_api()
 
-    tweets = api.user_timeline(screen_name="realDonaldTrump", count=200)
+    tweets = api.user_timeline(screen_name="realDonaldTrump", count=5)
 
     df = tweet_analyzer.tweets_to_data_frame(tweets)
 
-    print(df.head(10))
+    print(df.head(5))
