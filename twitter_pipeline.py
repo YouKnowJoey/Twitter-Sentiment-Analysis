@@ -5,7 +5,6 @@ Project uses code from [@vprusso](https://github.com/vprusso)'s repository: [You
 Thank you [@vprusso](https://github.com/vprusso) for your contribution to the open-source community.
 """
 
-from tweepy import API 
 from tweepy import Cursor
 from tweepy.streaming import StreamingClient
 from tweepy import Client
@@ -22,7 +21,7 @@ import re
 class TwitterClient():
     def __init__(self, twitter_user=None):
         self.auth = TwitterAuthenticator().authenticate_twitter_app()
-        self.twitter_client = API(self.auth)
+        self.twitter_client = Client(self.auth)
 
         self.twitter_user = twitter_user
 
@@ -135,7 +134,15 @@ if __name__ == '__main__':
 
     api = twitter_client.get_twitter_client_api()
 
-    tweets = api.user_timeline(screen_name="realDonaldTrump", count=5)
+    #Obtain desired user's tweets
+    user = api.get_user(username= "realDonaldTrump")
+    user_id = user.data.id
+
+    tweets = api.get_users_tweets(
+        id=user_id,
+        max_results=5,
+        exclude='replies'
+        ).data
 
     df = tweet_analyzer.tweets_to_data_frame(tweets)
 
