@@ -1,4 +1,6 @@
-# run in cmd line 'conda env create -f environment.yml'
+# run in cmd line :
+# 'conda env create -f environment.yml'
+# 'conda activate twitter-sentiment'
 
 name: twitter-sentiment
 channels:
@@ -9,10 +11,12 @@ dependencies:
   - pip
   - tweepy
   - matplotlib
+  - matplotlib-inline
+  - seaborn
   - numpy
   - pandas
   - scikit-learn
   - statsmodels
+  - nltk
   - pip:
       - datasets
-      
