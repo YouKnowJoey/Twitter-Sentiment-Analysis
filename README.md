@@ -5,6 +5,8 @@
 >
 >**The reproducibility of this project will be in the form of conda 'environment.yml'.**
 
+_**The IMPORTANT FILE that preprocesses and evaluates models is 'nlp_sentiment_pipline.ipynb'**_
+
 ## Reproduce Results
 In the command line execute:
 1. 'conda env create -f environment.yml'
