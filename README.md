@@ -9,7 +9,8 @@
 In the command line execute:
 1. 'conda env create -f environment.yml'
 2. 'conda activate twitter-sentiment'
-_**Hint: Python Kernel is easily installed with VS Code**_
+
+_**Advice: Python Kernel is easily installed with VS Code**_
 
 ## Aspirational Improvements
 - Introduce Non-linear ML models (i.e.Generalized Additive Models (GAMs), Local Regression (LOESS), or Splines)
