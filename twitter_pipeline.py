@@ -143,7 +143,7 @@ if __name__ == '__main__':
     api = twitter_client.get_twitter_client_api()
 
     #Obtain desired user's tweets
-    user = api.get_user(username= "realDonaldTrump")
+    user = api.get_user(username= "WhiteHouse")
     user_id = user.data.id
     print(user.data.username, user.data.id, user.data.name, user.data.description)
 
