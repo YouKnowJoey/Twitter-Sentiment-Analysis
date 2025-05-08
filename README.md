@@ -14,6 +14,18 @@ In the command line execute:
 
 _**Advice: Python Kernel is easily installed with VS Code**_
 
+## 📂 Data Source & Description
+
+This project uses the [Sentiment140 dataset](https://huggingface.co/datasets/stanfordnlp/sentiment140) hosted on Hugging Face Datasets.
+
+### Dataset Details:
+- **Source**: Hugging Face Datasets → [`stanfordnlp/sentiment140`](https://huggingface.co/datasets/stanfordnlp/sentiment140)
+- **Size**: 1.6 million tweets
+- **Labels**:
+  - `0`: Negative sentiment
+  - `2`: Neutral sentiment (often excluded in binary classification tasks)
+  - `4`: Positive sentiment
+
 ## 📊 Concluding Results
 
 | Model                     | Best Params                                                              | F1-Score | Accuracy |
